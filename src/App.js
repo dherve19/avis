@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header"
+import FeedbackList from "./components/FeedbackList"
+import FeedbackData from "./data/avis"
+import {useState} from 'react'
+import FeedbackStats from "./components/FeedbackStats"
+import FeedbackForm from "./components/FeedbackForm"
 
 function App() {
+  const [feedback, setFeedback] = useState(FeedbackData)
+  const ajoutAvi = (newAvi) => {
+    newAvi.id = Math.random()*500
+    setFeedback([newAvi, ...feedback])
+
+  }
+  const suprimer = (id) => {
+    if (window.confirm(` Etes vous sure de vouloir suprimer cet avi?`)) {
+      setFeedback(feedback.filter((avi) => ((avi.id !== id))))
+
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+    <Header text="COLLECTE DES AVIS"/>
+    <FeedbackForm handleAdd={ajoutAvi}/>
+    <FeedbackStats avis={feedback}/>
+    <FeedbackList feedback={feedback}
+    handleDelete={suprimer}/>
+    </>
+
+
+
+
+  )
 }
 
-export default App;
+export default App
+
